@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Edit {{ package.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">Edit Package</h1>
+    <form id="edit-package-form" method="POST" action="{{ url_for('edit_package', id=package.id) }}">
+        <!-- Package Name -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Package Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ package.name }}" required>
+        </div>
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required>{{ package.description }}</textarea>
+        </div>
+        <!-- Duration -->
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duration (e.g., "5 days")</label>
+            <input type="text" class="form-control" id="duration" name="duration" value="{{ package.duration }}" required>
+        </div>
+        <!-- Image URLs -->
+        <div class="mb-3">
+            <label for="images" class="form-label">Image URLs (comma-separated)</label>
+            <input type="text" class="form-control" id="images" name="images" value="{{ package.images }}" required>
+        </div>
+        <!-- Highlights -->
+        <div class="mb-3">
+            <label for="highlights" class="form-label">Key Highlights</label>
+            <input type="text" class="form-control" id="highlights" name="highlights" value="{{ package.highlights }}" required>
+        </div>
+        <!-- Inclusions -->
+        <div class="mb-3">
+            <label for="inclusions" class="form-label">Inclusions</label>
+            <textarea class="form-control" id="inclusions" name="inclusions" rows="2" required>{{ package.inclusions }}</textarea>
+        </div>
+        <!-- Exclusions -->
+        <div class="mb-3">
+            <label for="exclusions" class="form-label">Exclusions</label>
+            <textarea class="form-control" id="exclusions" name="exclusions" rows="2" required>{{ package.exclusions }}</textarea>
+        </div>
+        <!-- Specialty Tour -->
+        <div class="mb-3">
+            <label for="specialty-tour" class="form-label">Specialty Tour</label>
+            <input type="text" class="form-control" id="other-specialty-tour" name="specialty_tour" value="{{ package.specialty_tour }}" required>
+            <!-- <select id="specialty-tour" class="form-select" name="specialty_tour">
+                <option value="" {% if not package.specialty_tour %}selected{% endif %}>Select Specialty</option>
+                <option value="Adventure" {% if package.specialty_tour == "Adventure" %}selected{% endif %}>Adventure</option>
+                <option value="Relaxation" {% if package.specialty_tour == "Relaxation" %}selected{% endif %}>Relaxation</option>
+                <option value="Family" {% if package.specialty_tour == "Family" %}selected{% endif %}>Family</option>
+                <option value="Other" {% if package.specialty_tour == "Other" %}selected{% endif %}>Other</option>
+            </select>
+            <input type="text" class="form-control mt-2 {% if package.specialty_tour != 'Other' %}d-none{% endif %}" id="other-specialty-tour" name="other_specialty_tour" placeholder="Please specify" value="{% if package.specialty_tour == 'Other' %}{{ package.specialty_tour }}{% endif %}"> -->
+        </div>
+        <!-- Tour Type -->
+        <div class="mb-3">
+            <label for="tour-type" class="form-label">Tour Type</label>
+            <input type="text" class="form-control" id="other-tour-type" name="tour_type" value="{{ package.tour_type }}" required>
+            <!-- <select id="tour-type" class="form-select" name="tour_type">
+                <option value="" {% if not package.tour_type %}selected{% endif %}>Select Tour Type</option>
+                <option value="Culture Tour" {% if package.tour_type == "Culture Tour" %}selected{% endif %}>Culture Tour</option>
+                <option value="Holiday Tour" {% if package.tour_type == "Holiday Tour" %}selected{% endif %}>Holiday Tour</option>
+                <option value="Other" {% if package.tour_type == "Other" %}selected{% endif %}>Other</option>
+            </select>
+            <input type="text" class="form-control mt-2 {% if package.tour_type != 'Other' %}d-none{% endif %}" id="other-tour-type" name="other_tour_type" placeholder="Please specify" value="{% if package.tour_type == 'Other' %}{{ package.tour_type }}{% endif %}"> -->
+        </div>
+        <!-- City -->
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" name="city" value="{{ package.city }}" required>
+        </div>
+        <!-- Category -->
+        <!-- <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" class="form-control" id="category" name="category" value="{{ package.category }}" required>
+        </div> -->
+        <!-- Itinerary -->
+        <div id="itinerary-container">
+            <h5>Itinerary</h5>
+            {% for day in package.itinerary %}
+            <div class="mb-3">
+                <label for="itinerary-day-{{ day.day_number }}" class="form-label">Day {{ day.day_number }}</label>
+                <textarea id="itinerary-day-{{ day.day_number }}" name="itinerary_day_{{ day.day_number }}" class="form-control" required>{{ day.day_description }}</textarea>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="btn btn-secondary mb-3" id="generate-itinerary">Generate Itinerary</button>
+        <!-- Is Active -->
+        <div class="mb-3">
+            <label for="is-active" class="form-label">Is Active?</label>
+            <select class="form-select" id="is-active" name="is_active" required>
+                <option value="true" {% if package.is_active %}selected{% endif %}>Yes</option>
+                <option value="false" {% if not package.is_active %}selected{% endif %}>No</option>
+            </select>
+        </div>
+        <!-- Mark as Popular -->
+        <div class="mb-3">
+            <label for="is-popular" class="form-label">Mark as Popular</label>
+            <select class="form-select" id="is-popular" name="is_popular" required>
+                <option value="true" {% if package.is_popular %}selected{% endif %}>Yes</option>
+                <option value="false" {% if not package.is_popular %}selected{% endif %}>No</option>
+            </select>
+        </div>
+        <!-- Display on Homepage -->
+        <div class="mb-3">
+            <label for="is-homepage" class="form-label">Display on Homepage</label>
+            <select class="form-select" id="is-homepage" name="show_on_homepage" required>
+                <option value="true" {% if package.show_on_homepage %}selected{% endif %}>Yes</option>
+                <option value="false" {% if not package.show_on_homepage %}selected{% endif %}>No</option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="/package-details/{{ package.id }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+{% endblock %}

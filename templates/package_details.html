@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}{{ package.name }} Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Gallery Section -->
+    <!-- <h2 class="mb-4 text-center">Gallery</h2> -->
+    <div id="packageGallery" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for image_url in package.images.split(',') %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                <img src="{{ image_url }}" class="d-block w-100" alt="{{ package.name }} Image" style="height: 600px; object-fit: cover;">
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#packageGallery" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#packageGallery" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Package Details Section -->
+    <div class="mt-5">
+        <h1 class="text-center">{{ package.name }}</h1>
+        <p class="text-muted text-center">{{ package.description }}</p>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <p><strong>Duration:</strong> {{ package.duration }}</p>
+                <p><strong>Highlights:</strong> {{ package.highlights }}</p>
+                <p><strong>Inclusions:</strong> {{ package.inclusions }}</p>
+                <p><strong>Exclusions:</strong> {{ package.exclusions }}</p>
+            </div>
+            <div class="col-md-6">
+                <!-- <p><strong>Category:</strong> {{ package.category }}</p> -->
+                <p><strong>City:</strong> {{ package.city }}</p>
+                <p><strong>Specialty Tour:</strong> {{ package.specialty_tour }}</p>
+                <p><strong>Tour Type:</strong> {{ package.tour_type }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Itinerary Section -->
+    <div class="mt-5">
+        <h3>Itinerary</h3>
+        <div class="accordion" id="itineraryAccordion">
+            {% for item in package.itinerary %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ item.day_number }}">
+                    <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ item.day_number }}" aria-expanded="{% if loop.first %}true{% else %}false{% endif %}" aria-controls="collapse{{ item.day_number }}">
+                        Day {{ item.day_number }}
+                    </button>
+                </h2>
+                <div id="collapse{{ item.day_number }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" aria-labelledby="heading{{ item.day_number }}" data-bs-parent="#itineraryAccordion">
+                    <div class="accordion-body">
+                        {{ item.day_description }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div class="d-flex justify-content-between mt-5">
+        <a href="/packages" class="btn btn-secondary">Back to Packages</a>
+        <div>
+            <a href="/edit-package/{{ package.id }}" class="btn btn-primary me-2">Edit Package</a>
+            <form action="/delete-package/{{ package.id }}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger">Delete Package</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

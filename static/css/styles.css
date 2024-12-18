@@ -1,0 +1,43 @@
+h1 {
+	color: darkblue;
+	font-size:60px;
+}
+
+body {
+	background: #f4f4f4;
+    font-family: Arial, sans-serif;
+
+}
+
+#demo{
+	font-size: 12px;
+	color: darkblue;
+}
+.navbar-nav .nav-link {
+    margin: 0 10px; /* Adds spacing between navigation links */
+    font-weight: 500; /* Makes links slightly bolder */
+}
+.navbar-brand img {
+    max-height: 60px; /* Adjust logo size */
+}
+.btn-primary {
+    font-weight: 600;
+    border-radius: 20px; /* Gives the button a rounded appearance */
+}
+.filters-panel {
+    background: #f8f9fa;
+    padding: 15px;
+}
+
+.filters-panel h4 {
+    margin-bottom: 20px;
+}
+
+.card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card {
+    margin-bottom: 20px;
+}

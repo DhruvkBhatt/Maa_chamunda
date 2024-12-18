@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="{{url_for('index')}}">
+            <img src="static/images/logo.png" alt="Logo" style="max-height: 80px;">
+        </a>
+        <!-- Navbar Toggler for smaller screens -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Centered Navigation Links -->
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('index')}}">Home</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('get_packages')}}">Our Packages</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('get_packages') }}">View All Packages</a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('add_package') }}">Add Package</a>
+                </li> -->
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Booking Type
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                        <li><a href="{{ url_for('bus_booking') }}">Bus Booking</a></li>
+                        <li><a href="{{ url_for('hotel_booking') }}">Hotel Booking</a></li>
+                        <li><a href="{{ url_for('train_booking') }}">Train Booking</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('about')}}">About Us</a>
+                </li>
+
+                <!-- <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('contact')}}">Contact Us</a>
+                </li> -->
+            </ul>
+            <!-- Right-Side Enquiry Button -->
+            <a href="{{url_for('about')}}" class="btn btn-primary">Enquiry</a>
+        </div>
+    </div>
+</nav>

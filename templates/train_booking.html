@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section id="train-booking" class="py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-4">Train Booking</h2>
+        <p class="text-center">Plan your train journeys with ease through our booking service.</p>
+        <form method="POST" action="{{ url_for('submit_train_booking') }}">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+            </div>
+            <div class="mb-3">
+                <label for="contact" class="form-label">Contact No</label>
+                <input type="tel" class="form-control" id="contact" name="contact" pattern="[0-9]{10}" required>
+            </div>
+            <div class="mb-3">
+                <label for="from" class="form-label">From</label>
+                <input type="text" class="form-control" id="from" name="from" required>
+            </div>
+            <div class="mb-3">
+                <label for="to" class="form-label">To</label>
+                <input type="text" class="form-control" id="to" name="to" required>
+            </div>
+            <div class="mb-3">
+                <label for="departure" class="form-label">Departure Date</label>
+                <input type="date" class="form-control" id="departure" name="departure" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Maa Chamunda{% endblock %}
+
+{% block content %}
+<section id="featured-packages" class="py-5">
+    <div class="container">
+        <!-- <h2 class="text-center mb-4">Featured Packages</h2> -->
+        <div id="featuredSlider" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for package in featured_packages %}
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <img src="{{ package.images.split(',')[0] }}" class="d-block w-100" alt="{{ package.name }}" style="height: 550px; object-fit: cover;">
+                    <div class="carousel-caption d-block">
+                        <h1>{{ package.name }}</h1>
+                        <p>{{ package.duration }}</p>
+                        <a href="{{ url_for('view_package', id=package.id) }}" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredSlider" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredSlider" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<section id="destinations" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Popular Destinations</h2>
+        <div class="row">
+            {% for destination in popular_destinations %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ destination.images.split(',')[0] }}" class="card-img-top" alt="{{ destination.name }}">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ destination.name }}</h5>
+                        <p>{{ destination.description }}</p>
+                        <a href="{{ url_for('view_package', id=destination.id) }}" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="about-us" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4">About Us</h2>
+        <p class="text-center">
+            Welcome to Maa Chamunda Tours & Travels. We specialize in offering personalized travel experiences that
+            cater to individuals, families, and groups. Whether it's a serene beach vacation, an adventurous trek,
+            or a cultural exploration, we ensure memorable experiences.
+        </p>
+    </div>
+</section>
+{% endblock %}

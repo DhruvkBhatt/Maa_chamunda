@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Add Package{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">Add New Package</h1>
+    <form id="add-package-form" method="POST" action="{{ url_for('add_package') }}">
+        <!-- Package Name -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Package Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <!-- Description -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control rich-text-editor" id="description" name="description" rows="3" required></textarea>
+            <!-- <div id="description-editor" class="quill-editor"></div>
+            <input type="hidden" id="description" name="description"> -->
+        </div>
+        <!-- Duration -->
+        <div class="mb-3">
+            <label for="duration" class="form-label">Duration (e.g., "5 days")</label>
+            <input type="text" class="form-control" id="duration" name="duration" required>
+        </div>
+        <!-- Image URLs -->
+        <div class="mb-3">
+            <label for="images" class="form-label">Image URLs (comma-separated)</label>
+            <input type="text" class="form-control" id="images" name="images" required>
+        </div>
+        <!-- Highlights -->
+        <div class="mb-3">
+            <label for="highlights" class="form-label">Key Highlights</label>
+            <input type="text" class="form-control" id="highlights" name="highlights" required>
+        </div>
+        <!-- Inclusions -->
+        <div class="mb-3">
+            <label for="inclusions" class="form-label">Inclusions</label>
+            <textarea class="form-control" id="inclusions" name="inclusions" rows="2" required></textarea>
+        </div>
+        <!-- Exclusions -->
+        <div class="mb-3">
+            <label for="exclusions" class="form-label">Exclusions</label>
+            <textarea class="form-control" id="exclusions" name="exclusions" rows="2" required></textarea>
+        </div>
+        <!-- Specialty Tour -->
+        <div class="mb-3">
+            <label for="specialty-tour" class="form-label">Specialty Tour</label>
+            <select id="specialty-tour" class="form-select" name="specialty_tour">
+                <option value="">Select Specialty</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Relaxation">Relaxation</option>
+                <option value="Family">Family</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="text" class="form-control mt-2 d-none" id="other-specialty-tour" name="other_specialty_tour" placeholder="Please specify">
+        </div>
+        <!-- Tour Type -->
+        <div class="mb-3">
+            <label for="tour-type" class="form-label">Tour Type</label>
+            <select id="tour-type" class="form-select" name="tour_type">
+                <option value="">Select Tour Type</option>
+                <option value="Culture Tour">Culture Tour</option>
+                <option value="Holiday Tour">Holiday Tour</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="text" class="form-control mt-2 d-none" id="other-tour-type" name="other_tour_type" placeholder="Please specify">
+        </div>
+        <!-- City -->
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" name="city" required>
+        </div>
+        <!-- Category -->
+        <!-- <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select id="category" class="form-select" name="category" required>
+                <option value="">Select Category</option>
+                <option value="Budget">Budget</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Cultural">Cultural</option>
+                <option value="Relaxation">Relaxation</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="text" class="form-control mt-2 d-none" id="other-category" name="other_category" placeholder="Please specify">
+        </div> -->
+        <!-- Itinerary -->
+        <div id="itinerary-container">
+            <h5>Itinerary</h5>
+            <!-- Dynamically added itinerary fields will go here -->
+        </div>
+        <button type="button" class="btn btn-secondary mb-3" id="generate-itinerary">Generate Itinerary</button>
+        <!-- Is Active -->
+        <div class="mb-3">
+            <label for="is-active" class="form-label">Is Active?</label>
+            <select class="form-select" id="is-active" name="isActive" required>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="is-popular" class="form-label">Mark as Popular</label>
+            <select class="form-select" id="is-popular" name="is_popular" required>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="is-homepage" class="form-label">Display on Homepage</label>
+            <select class="form-select" id="is-homepage" name="show_on_homepage" required>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>        
+        <!-- Submit Button -->+
+        <button type="submit" class="btn btn-primary">Add Package</button>
+    </form>
+</div>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+<!-- <script>
+    $(document).ready(function() {
+        // Initialize Quill editor
+        var quill = new Quill('.rich-text-editor', {
+            theme: 'snow'
+        });
+    });
+</script> -->
+{% endblock %}
