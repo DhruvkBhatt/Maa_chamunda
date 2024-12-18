@@ -26,3 +26,4 @@ WTForms==2.3.3
 psycopg2==2.9.10
 gunicorn==23.0.0
 Flask-Mail==0.10.0
+Flask-Cors==5.0.0
