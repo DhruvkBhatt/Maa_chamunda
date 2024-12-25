@@ -533,10 +533,14 @@ def edit_package(id):
 def delete_package(id):
     # Delete a package
     package = Package.query.get_or_404(id)
+
+    # Delete all related itineraries
+    Itinerary.query.filter_by(package_id=id).delete()
+
     db.session.delete(package)
     db.session.commit()
-    # add a flash message
-    flash("The package has been deleted successfully.", "success")
+    # Add a flash message
+    flash("The package and its associated itineraries have been deleted successfully.", "success")
     return redirect(url_for('get_packages'))
 
 
