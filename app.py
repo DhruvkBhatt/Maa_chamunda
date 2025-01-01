@@ -356,15 +356,15 @@ def get_packages():
     elif duration_range == "10+":
         min_duration, max_duration = 10, 30
 
-    print(f"Filters - specialties: {specialties}, tour_types: {tour_types}, min_duration: {min_duration}, max_duration: {max_duration}, city: {city}")
+    # print(f"Filters - specialties: {specialties}, tour_types: {tour_types}, min_duration: {min_duration}, max_duration: {max_duration}, city: {city}")
 
     # Initialize query object
     query = Package.query
     packages = query.all()
-    print("packages")
-    print(packages)
-    for package in packages:
-        print(package.duration)
+    # print("packages")
+    # print(packages)
+    # for package in packages:
+    #     print(package.duration)
     # Apply filters
     if specialties:
         query = query.filter(db.func.lower(Package.specialty_tour).in_([s.lower() for s in specialties]))
@@ -394,8 +394,8 @@ def get_packages():
             if extract_days(package.duration) is not None and
             min_duration <= extract_days(package.duration) <= max_duration
         ]
-    print("packages")
-    print(packages)
+    # print("packages")
+    # print(packages)
 
 
     # Fetch distinct filter options from the database
@@ -403,7 +403,7 @@ def get_packages():
     tour_types_options = sorted(set(p.tour_type for p in Package.query.all() if p.tour_type))
     # categories_options = sorted(set(p.category for p in Package.query.all() if p.category))
 
-    print(f"Available filters - specialties_options: {specialties_options}, tour_types_options: {tour_types_options}")
+    # print(f"Available filters - specialties_options: {specialties_options}, tour_types_options: {tour_types_options}")
 
     # Render the template and pass the data
     return render_template(
@@ -427,15 +427,15 @@ def get_packages():
 def view_package(id):
     # Get details for a single package
     package = Package.query.get_or_404(id)
-    print("package")
-    print(package)
+    # print("package")
+    # print(package)
     return render_template('package_details.html', package=package)
 
 @app.route('/package-details/<int:package_id>', methods=['GET'])
 def package_details(package_id):
     package = Package.query.get_or_404(package_id)
-    print("package")
-    print(package)
+    # print("package")
+    # print(package)
     return render_template('package_details.html', package=package)
 
 @app.route('/add-package-12359876', methods=['GET', 'POST'])
@@ -477,15 +477,15 @@ def add_package():
         )
         
         db.session.add(new_package)
-        print("new_package")        
-        print(new_package)
+        # print("new_package")        
+        # print(new_package)
         db.session.flush()  # Get the package ID before committing
 
         # Process itinerary details
         itinerary_days = [
             key for key in data.keys() if key.startswith("itinerary_day_")
         ]
-        print("itinerary_item")
+        # print("itinerary_item")
         for day_key in itinerary_days:
             day_number = int(day_key.split("_")[-1])  # Extract day number
             day_description = data[day_key]
@@ -494,7 +494,7 @@ def add_package():
                 day_number=day_number,
                 package_id=new_package.id
             )
-            print(itinerary_item)
+            # print(itinerary_item)
             db.session.add(itinerary_item)
         
         db.session.commit()
@@ -507,8 +507,8 @@ def edit_package(id):
     if request.method == 'POST':
         # Update the package details from the form data
         data = request.form
-        print("data")
-        print(data)
+        # print("data")
+        # print(data)
         package.name = data['name']
         package.description = data['description']
         package.duration = data['duration']
