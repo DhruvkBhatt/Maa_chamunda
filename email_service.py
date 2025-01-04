@@ -34,6 +34,16 @@ def create_admin_email_body(booking_type, **kwargs):
             To: {kwargs.get('To')}
             Departure Date: {kwargs.get('departure_date')}
             """
+        elif booking_type == "enquiry":
+            body = f"""
+            New {booking_type} request received:
+
+            Name: {kwargs.get('name')}
+            Email: {kwargs.get('email')}
+            Contact No: {kwargs.get('contact')}
+            Extra: {kwargs.get('extra')}
+            Message: {kwargs.get('message')}
+            """
         else:
             body = "Booking details not available."
         return body

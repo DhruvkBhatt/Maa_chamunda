@@ -130,19 +130,23 @@ def submit_enquiry():
         else:
             return jsonify({"status": "error", "message": "Unsupported data format"})
 
-        # Send emails
-        send_admin_email(mail, name, email, phone, message)
-        send_client_acknowledgment(mail, email, name, email, phone, message)
+        # Send admin email
+        send_admin_email(
+            mail, "enquiry",
+            name=name, email=email, contact=phone, message=message
+        )
+
+        # Send client acknowledgment
+        send_client_acknowledgment(mail, email, name, "enquiry")
 
         # Flash success message
         flash("Thank you for your enquiry! A confirmation email has been sent to you.", "success")
-        return redirect(url_for('home'))
+        return redirect(url_for('index'))
 
     except Exception as e:
         print(f"Error: {e}")
         flash("There was an issue processing your request. Please try again later.", "danger")
         return redirect(url_for('index'))
-
 
 @app.route('/submit-hotel-booking', methods=['POST'])
 def submit_hotel_booking():
@@ -399,8 +403,8 @@ def get_packages():
 
 
     # Fetch distinct filter options from the database
-    specialties_options = sorted(set(p.specialty_tour for p in Package.query.all() if p.specialty_tour))
-    tour_types_options = sorted(set(p.tour_type for p in Package.query.all() if p.tour_type))
+    specialties_options = sorted(set(p.specialty_tour.title() for p in Package.query.all() if p.specialty_tour))
+    tour_types_options = sorted(set(p.tour_type.title() for p in Package.query.all() if p.tour_type))
     # categories_options = sorted(set(p.category for p in Package.query.all() if p.category))
 
     # print(f"Available filters - specialties_options: {specialties_options}, tour_types_options: {tour_types_options}")

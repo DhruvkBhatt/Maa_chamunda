@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="{{url_for('index')}}">
-            <img src="static/images/logo.png" alt="Logo" style="max-height: 80px;">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="max-height: 80px;">
         </a>
         <!-- Navbar Toggler for smaller screens -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
