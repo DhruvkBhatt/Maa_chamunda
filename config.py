@@ -3,8 +3,10 @@ class Config:
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = 'bhattdk19@gmail.com'
-    MAIL_PASSWORD = 'lraugnsclxihthkr'
+    # MAIL_USERNAME = 'bhattdk19@gmail.com'
+    # MAIL_PASSWORD = 'lraugnsclxihthkr'
+    MAIL_USERNAME = 'maachamunda2712@gmail.com'
+    MAIL_PASSWORD = 'crxpofjwwctfzoxk'
     # SQLALCHEMY_DATABASE_URI='sqlite:///packages.db'
     SQLALCHEMY_DATABASE_URI='postgresql://maachamunda_user:yUtqgY4oelMx3dda39IHdWUnbAT6cZB5@dpg-ctheu123esus73fds840-a/maachamunda'
     # SQLALCHEMY_DATABASE_URI='postgresql://maachamunda_user:yUtqgY4oelMx3dda39IHdWUnbAT6cZB5@dpg-ctheu123esus73fds840-a.oregon-postgres.render.com/maachamunda'
