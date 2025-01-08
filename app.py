@@ -438,9 +438,13 @@ def view_package(id):
 @app.route('/package-details/<int:package_id>', methods=['GET'])
 def package_details(package_id):
     package = Package.query.get_or_404(package_id)
+
+    # Sort itinerary by day_number
+    sorted_itinerary = sorted(package.itinerary, key=lambda x: x.day_number)
+
     # print("package")
     # print(package)
-    return render_template('package_details.html', package=package)
+    return render_template('package_details.html', package=package, itinerary=sorted_itinerary)
 
 @app.route('/add-package-12359876', methods=['GET', 'POST'])
 def add_package():
@@ -528,9 +532,20 @@ def edit_package(id):
         package.is_popular = data.get('is_popular', 'true') == 'true'
         package.show_on_homepage = data.get('show_on_homepage', 'true') == 'true'
         db.session.commit()
+
+        
+
         return redirect(url_for('package_details', package_id=id))
-    
-    return render_template('edit_package.html', package=package)
+    # Convert itinerary to a list of dictionaries (JSON-serializable)
+    itinerary_data = [
+        {
+            "day_number": item.day_number,
+            "day_description": item.day_description
+        }
+        for item in package.itinerary
+    ]
+
+    return render_template('edit_package.html', package=package, itinerary_data=itinerary_data)
 
 
 @app.route('/delete-package/<int:id>', methods=['POST'])

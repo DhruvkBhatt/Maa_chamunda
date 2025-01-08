@@ -77,15 +77,15 @@
             <input type="text" class="form-control" id="category" name="category" value="{{ package.category }}" required>
         </div> -->
         <!-- Itinerary -->
-        <div id="itinerary-container">
+        <div id="itinerary-container" data-itineraries='{{ itinerary_data | tojson }}'>
             <h5>Itinerary</h5>
-            {% for day in package.itinerary %}
+            {% for day in itinerary_data %}
             <div class="mb-3">
                 <label for="itinerary-day-{{ day.day_number }}" class="form-label">Day {{ day.day_number }}</label>
                 <textarea id="itinerary-day-{{ day.day_number }}" name="itinerary_day_{{ day.day_number }}" class="form-control" required>{{ day.day_description }}</textarea>
             </div>
             {% endfor %}
-        </div>
+        </div>        
         <button type="button" class="btn btn-secondary mb-3" id="generate-itinerary">Generate Itinerary</button>
         <!-- Is Active -->
         <div class="mb-3">

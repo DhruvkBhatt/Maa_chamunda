@@ -1,4 +1,4 @@
-console.log("JavaScript is working!");
+// console.log("JavaScript is working!");
 // Fetch packages and populate the container
 document.addEventListener('DOMContentLoaded', function () {
     const packagesContainer = document.getElementById('packages-container');
@@ -29,16 +29,34 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 });
 
-// Show/Hide "Other" input fields for Specialty Tour
-document.getElementById('specialty-tour').addEventListener('change', function () {
-    const otherSpecialtyInput = document.getElementById('other-specialty-tour');
-    if (this.value === 'Other') {
-        otherSpecialtyInput.classList.remove('d-none');
-    } else {
-        otherSpecialtyInput.classList.add('d-none');
-        otherSpecialtyInput.value = '';
+// // Show/Hide "Other" input fields for Specialty Tour
+// document.getElementById('specialty-tour').addEventListener('change', function () {
+//     const otherSpecialtyInput = document.getElementById('other-specialty-tour');
+//     if (this.value === 'Other') {
+//         otherSpecialtyInput.classList.remove('d-none');
+//     } else {
+//         otherSpecialtyInput.classList.add('d-none');
+//         otherSpecialtyInput.value = '';
+//     }
+// });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const specialtyTourElement = document.getElementById('specialty-tour');
+    if (specialtyTourElement) {
+        specialtyTourElement.addEventListener('change', function () {
+            const otherSpecialtyInput = document.getElementById('other-specialty-tour');
+            if (this.value === 'Other') {
+                otherSpecialtyInput.classList.remove('d-none');
+            } else {
+                otherSpecialtyInput.classList.add('d-none');
+                otherSpecialtyInput.value = '';
+            }
+        });
     }
 });
+
+
 // Show/Hide "Other" input fields for Category
 // document.getElementById('category').addEventListener('change', function () {
 //     const otherCategoryInput = document.getElementById('other-category');
@@ -50,17 +68,56 @@ document.getElementById('specialty-tour').addEventListener('change', function ()
 //     }
 // });
 // Show/Hide "Other" input fields for Tour Type
-document.getElementById('tour-type').addEventListener('change', function () {
-    const otherTourTypeInput = document.getElementById('other-tour-type');
-    if (this.value === 'Other') {
-        otherTourTypeInput.classList.remove('d-none');
-    } else {
-        otherTourTypeInput.classList.add('d-none');
-        otherTourTypeInput.value = '';
+// document.getElementById('tour-type').addEventListener('change', function () {
+//     const otherTourTypeInput = document.getElementById('other-tour-type');
+//     if (this.value === 'Other') {
+//         otherTourTypeInput.classList.remove('d-none');
+//     } else {
+//         otherTourTypeInput.classList.add('d-none');
+//         otherTourTypeInput.value = '';
+//     }
+// });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const tourTypeElement = document.getElementById('tour-type');
+    if (tourTypeElement) {
+        tourTypeElement.addEventListener('change', function () {
+            const otherTourTypeInput = document.getElementById('other-tour-type');
+            if (this.value === 'Other') {
+                otherTourTypeInput.classList.remove('d-none');
+            } else {
+                otherTourTypeInput.classList.add('d-none');
+                otherTourTypeInput.value = '';
+            }
+        });
     }
 });
 
-// Generate Itinerary fields based on Duration
+// // Generate Itinerary fields based on Duration
+// document.getElementById('generate-itinerary').addEventListener('click', function () {
+//     const durationInput = document.getElementById('duration').value.trim();
+//     const itineraryContainer = document.getElementById('itinerary-container');
+//     itineraryContainer.innerHTML = '<h5>Itinerary</h5>'; // Reset container
+
+//     // Extract number of days from the duration string
+//     const match = durationInput.match(/(\d+)\s*days?/i);
+//     if (match) {
+//         const numberOfDays = parseInt(match[1], 10);
+//         // Generate text areas for each day
+//         for (let i = 1; i <= numberOfDays; i++) {
+//             const dayDiv = document.createElement('div');
+//             dayDiv.classList.add('mb-3');
+//             dayDiv.innerHTML = `
+//                 <label for="day-${i}" class="form-label">Day ${i}</label>
+//                 <textarea id="day-${i}" name="itinerary_day_${i}" class="form-control" placeholder="Enter activities for Day ${i}" required></textarea>
+//             `;
+//             itineraryContainer.appendChild(dayDiv);
+//         }
+//     } else {
+//         alert('Please enter a valid duration in the format "X days".');
+//     }
+// });
+
 document.getElementById('generate-itinerary').addEventListener('click', function () {
     const durationInput = document.getElementById('duration').value.trim();
     const itineraryContainer = document.getElementById('itinerary-container');
@@ -70,18 +127,46 @@ document.getElementById('generate-itinerary').addEventListener('click', function
     const match = durationInput.match(/(\d+)\s*days?/i);
     if (match) {
         const numberOfDays = parseInt(match[1], 10);
+
+        // Fetch existing itinerary data
+        const existingItineraries = Array.from(itineraryContainer.querySelectorAll('textarea'))
+            .reduce((acc, textarea) => {
+                const dayNumber = parseInt(textarea.id.split('-')[1], 10);
+                acc[dayNumber] = textarea.value;
+                return acc;
+            }, {});
+
         // Generate text areas for each day
         for (let i = 1; i <= numberOfDays; i++) {
             const dayDiv = document.createElement('div');
             dayDiv.classList.add('mb-3');
             dayDiv.innerHTML = `
                 <label for="day-${i}" class="form-label">Day ${i}</label>
-                <textarea id="day-${i}" name="itinerary_day_${i}" class="form-control" placeholder="Enter activities for Day ${i}" required></textarea>
+                <textarea id="day-${i}" name="itinerary_day_${i}" class="form-control" 
+                          placeholder="Enter activities for Day ${i}" required>${existingItineraries[i] || ''}</textarea>
             `;
             itineraryContainer.appendChild(dayDiv);
         }
     } else {
         alert('Please enter a valid duration in the format "X days".');
+    }
+});
+
+// Preload existing itineraries when the page loads
+document.addEventListener('DOMContentLoaded', function () {
+    const itineraryContainer = document.getElementById('itinerary-container');
+    if (itineraryContainer && itineraryContainer.dataset.itineraries) {
+        const itineraries = JSON.parse(itineraryContainer.dataset.itineraries);
+        itineraries.forEach((itinerary, index) => {
+            const dayDiv = document.createElement('div');
+            dayDiv.classList.add('mb-3');
+            dayDiv.innerHTML = `
+                <label for="day-${index + 1}" class="form-label">Day ${index + 1}</label>
+                <textarea id="day-${index + 1}" name="itinerary_day_${index + 1}" class="form-control" 
+                          placeholder="Enter activities for Day ${index + 1}" required>${itinerary}</textarea>
+            `;
+            itineraryContainer.appendChild(dayDiv);
+        });
     }
 });
 
