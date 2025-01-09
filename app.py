@@ -446,6 +446,17 @@ def package_details(package_id):
     # print(package)
     return render_template('package_details.html', package=package, itinerary=sorted_itinerary)
 
+@app.route('/package-details-12359876/<int:package_id>', methods=['GET'])
+def edit_package_details(package_id):
+    package = Package.query.get_or_404(package_id)
+
+    # Sort itinerary by day_number
+    sorted_itinerary = sorted(package.itinerary, key=lambda x: x.day_number)
+
+    # print("package")
+    # print(package)
+    return render_template('package_details_12359876.html', package=package, itinerary=sorted_itinerary)
+
 @app.route('/add-package-12359876', methods=['GET', 'POST'])
 def add_package():
     if request.method == 'GET':
