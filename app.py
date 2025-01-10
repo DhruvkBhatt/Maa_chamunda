@@ -524,10 +524,8 @@ def edit_package(id):
     package = Package.query.get_or_404(id)
     
     if request.method == 'POST':
-        # Update the package details from the form data
+        # Update package details
         data = request.form
-        # print("data")
-        # print(data)
         package.name = data['name']
         package.description = data['description']
         package.duration = data['duration']
@@ -535,24 +533,55 @@ def edit_package(id):
         package.highlights = data['highlights']
         package.inclusions = data['inclusions']
         package.exclusions = data['exclusions']
-        package.specialty_tour =  data.get('specialty_tour', '').strip()
-        package.tour_type =  data.get('tour_type', '').strip()
+        package.specialty_tour = data.get('specialty_tour', '').strip()
+        package.tour_type = data.get('tour_type', '').strip()
         package.city = data['city']
-        # package.category = data['category']
         package.is_active = data.get('is_active', 'true') == 'true'
         package.is_popular = data.get('is_popular', 'true') == 'true'
         package.show_on_homepage = data.get('show_on_homepage', 'true') == 'true'
+        
+        # Handle itinerary updates
+        new_itineraries = []
+        for key, value in data.items():
+            if key.startswith('itinerary_day_'):
+                day_number = int(key.split('_')[-1])
+                existing_itinerary = Itinerary.query.filter_by(package_id=package.id, day_number=day_number).first()
+                if existing_itinerary:
+                    existing_itinerary.day_description = value
+                else:
+                    new_itineraries.append(Itinerary(day_number=day_number, day_description=value, package_id=package.id))
+        
+        # Add new itineraries
+        db.session.add_all(new_itineraries)
+
+        # Handle itinerary deletions
+        # delete_ids = data.getlist('delete_itinerary_ids')
+        # valid_ids = [int(item) for item in delete_ids if item.strip().isdigit()]
+
+        # print("delete_ids: ",delete_ids , len(delete_ids), valid_ids, len(valid_ids))
+        # if delete_ids and valid_ids:
+        #     Itinerary.query.filter(Itinerary.id.in_(valid_ids)).delete(synchronize_session=False)
+
+        delete_ids = data.getlist('delete_itinerary_ids')
+        print("Raw delete_ids: ", delete_ids)
+
+        # Convert the string into a list of integers
+        if delete_ids and len(delete_ids) == 1:  # Check if delete_ids has a single string
+            delete_ids = delete_ids[0].strip().split(',')  # Split the string into individual IDs
+            delete_ids = [int(id.strip()) for id in delete_ids if id.strip().isdigit()]  # Convert to integers and filter invalid entries
+            print("Processed delete_ids: ", delete_ids)
+
+            # Delete entries if there are valid IDs
+            if delete_ids:
+                Itinerary.query.filter(Itinerary.id.in_(delete_ids)).delete(synchronize_session=False)
+
         db.session.commit()
 
-        
-
         return redirect(url_for('package_details', package_id=id))
-    # Convert itinerary to a list of dictionaries (JSON-serializable)
+
+    # Prepare itinerary data
     itinerary_data = [
-        {
-            "day_number": item.day_number,
-            "day_description": item.day_description
-        }
+        {"id": item.id, "day_number": item.day_number, "day_description": item.day_description}
         for item in package.itinerary
     ]
 

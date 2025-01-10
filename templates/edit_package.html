@@ -77,7 +77,20 @@
             <input type="text" class="form-control" id="category" name="category" value="{{ package.category }}" required>
         </div> -->
         <!-- Itinerary -->
-        <div id="itinerary-container" data-itineraries='{{ itinerary_data | tojson }}'>
+        <div id="itinerary-container">
+            <h5>Itinerary</h5>
+            {% for day in itinerary_data %}
+            <div class="mb-3 itinerary-item" data-id="{{ day.id }}">
+                <label for="itinerary-day-{{ day.day_number }}" class="form-label">Day {{ day.day_number }}</label>
+                <textarea id="itinerary-day-{{ day.day_number }}" name="itinerary_day_{{ day.day_number }}" class="form-control" required>{{ day.day_description }}</textarea>
+                <button type="button" class="btn btn-danger remove-itinerary" data-id="{{ day.id }}">Remove</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" class="btn btn-secondary" id="add-itinerary">Add Day</button>
+        <input type="hidden" name="delete_itinerary_ids" id="delete-itinerary-ids" value="">
+        
+        <!-- <div id="itinerary-container" data-itineraries='{{ itinerary_data | tojson }}'>
             <h5>Itinerary</h5>
             {% for day in itinerary_data %}
             <div class="mb-3">
@@ -86,7 +99,7 @@
             </div>
             {% endfor %}
         </div>        
-        <button type="button" class="btn btn-secondary mb-3" id="generate-itinerary">Generate Itinerary</button>
+        <button type="button" class="btn btn-secondary mb-3" id="generate-itinerary">Generate Itinerary</button> -->
         <!-- Is Active -->
         <div class="mb-3">
             <label for="is-active" class="form-label">Is Active?</label>

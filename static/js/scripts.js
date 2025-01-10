@@ -118,37 +118,49 @@ document.addEventListener('DOMContentLoaded', function () {
 //     }
 // });
 
-document.getElementById('generate-itinerary').addEventListener('click', function () {
-    const durationInput = document.getElementById('duration').value.trim();
-    const itineraryContainer = document.getElementById('itinerary-container');
-    itineraryContainer.innerHTML = '<h5>Itinerary</h5>'; // Reset container
+document.addEventListener('DOMContentLoaded', () => {
+    const generateItineraryButton = document.getElementById('generate-itinerary');
 
-    // Extract number of days from the duration string
-    const match = durationInput.match(/(\d+)\s*days?/i);
-    if (match) {
-        const numberOfDays = parseInt(match[1], 10);
+    if (generateItineraryButton) {
+        generateItineraryButton.addEventListener('click', function () {
+            const durationInput = document.getElementById('duration')?.value.trim();
+            const itineraryContainer = document.getElementById('itinerary-container');
 
-        // Fetch existing itinerary data
-        const existingItineraries = Array.from(itineraryContainer.querySelectorAll('textarea'))
-            .reduce((acc, textarea) => {
-                const dayNumber = parseInt(textarea.id.split('-')[1], 10);
-                acc[dayNumber] = textarea.value;
-                return acc;
-            }, {});
+            if (!durationInput || !itineraryContainer) {
+                alert('Required elements are missing. Please check the form.');
+                return;
+            }
 
-        // Generate text areas for each day
-        for (let i = 1; i <= numberOfDays; i++) {
-            const dayDiv = document.createElement('div');
-            dayDiv.classList.add('mb-3');
-            dayDiv.innerHTML = `
-                <label for="day-${i}" class="form-label">Day ${i}</label>
-                <textarea id="day-${i}" name="itinerary_day_${i}" class="form-control" 
-                          placeholder="Enter activities for Day ${i}" required>${existingItineraries[i] || ''}</textarea>
-            `;
-            itineraryContainer.appendChild(dayDiv);
-        }
-    } else {
-        alert('Please enter a valid duration in the format "X days".');
+            itineraryContainer.innerHTML = '<h5>Itinerary</h5>'; // Reset container
+
+            // Extract number of days from the duration string
+            const match = durationInput.match(/(\d+)\s*days?/i);
+            if (match) {
+                const numberOfDays = parseInt(match[1], 10);
+
+                // Fetch existing itinerary data
+                const existingItineraries = Array.from(itineraryContainer.querySelectorAll('textarea'))
+                    .reduce((acc, textarea) => {
+                        const dayNumber = parseInt(textarea.id.split('-')[1], 10);
+                        acc[dayNumber] = textarea.value;
+                        return acc;
+                    }, {});
+
+                // Generate text areas for each day
+                for (let i = 1; i <= numberOfDays; i++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.classList.add('mb-3');
+                    dayDiv.innerHTML = `
+                        <label for="day-${i}" class="form-label">Day ${i}</label>
+                        <textarea id="day-${i}" name="itinerary_day_${i}" class="form-control" 
+                                  placeholder="Enter activities for Day ${i}" required>${existingItineraries[i] || ''}</textarea>
+                    `;
+                    itineraryContainer.appendChild(dayDiv);
+                }
+            } else {
+                alert('Please enter a valid duration in the format "X days".');
+            }
+        });
     }
 });
 
@@ -172,4 +184,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.querySelectorAll('.rich-text-editor').forEach((textarea) => {
     CKEDITOR.replace(textarea.id);
+});
+document.addEventListener('DOMContentLoaded', () => {
+    const itineraryContainer = document.getElementById('itinerary-container');
+    const deleteIdsInput = document.getElementById('delete-itinerary-ids');
+    const addItineraryButton = document.getElementById('add-itinerary');
+
+    if (itineraryContainer && deleteIdsInput) {
+        // Add new itinerary day only if the button exists
+        if (addItineraryButton) {
+            addItineraryButton.addEventListener('click', () => {
+                const dayNumber = itineraryContainer.children.length;
+                const newItinerary = document.createElement('div');
+                newItinerary.classList.add('mb-3', 'itinerary-item');
+                newItinerary.innerHTML = `
+                    <label for="itinerary-day-${dayNumber}" class="form-label">Day ${dayNumber}</label>
+                    <textarea id="itinerary-day-${dayNumber}" name="itinerary_day_${dayNumber}" class="form-control" required></textarea>
+                    <button type="button" class="btn btn-danger remove-itinerary">Remove</button>
+                `;
+                itineraryContainer.appendChild(newItinerary);
+            });
+        }
+
+        // Remove itinerary day functionality
+        itineraryContainer.addEventListener('click', (event) => {
+            if (event.target.classList.contains('remove-itinerary')) {
+                const itineraryItem = event.target.closest('.itinerary-item');
+                const itineraryId = itineraryItem.dataset.id;
+
+                if (itineraryId) {
+                    // Mark for deletion
+                    deleteIdsInput.value += `${itineraryId},`;
+                }
+                itineraryContainer.removeChild(itineraryItem);
+            }
+        });
+    }
 });
